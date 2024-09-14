@@ -56,5 +56,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("contentTitle")]
 		public virtual string ContentTitle => this.Value<string>(_publishedValueFallback, "contentTitle");
+
+		///<summary>
+		/// Page Content
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "14.2.0+1b21caa")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("pageContent")]
+		public virtual string PageContent => this.Value<string>(_publishedValueFallback, "pageContent");
 	}
 }

@@ -2,7 +2,6 @@
 using OpenAI.Chat;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Controllers;
 using umbraco14Test.Models;
@@ -11,26 +10,24 @@ using umbraco14Test.Services;
 
 namespace umbraco14Test.controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]/[action]")]
 	public class ChatbotController : UmbracoApiController
 	{
         private readonly IConfiguration _configuration;
         private readonly IChatGptService _gptService;
         private readonly IContentService _contentService;
-		private readonly IContentTypeService _contentTypeService;
-		private readonly IBackOfficeSecurity _iBackOfficeSecurity;
+        private readonly IContentTypeService _contentTypeService;
 
 
 
 
-		public ChatbotController(IConfiguration configuration, IChatGptService gptService, IContentService contentService, IContentTypeService contentTypeService, IBackOfficeSecurity  backOfficeSecurity)
+		public ChatbotController(IConfiguration configuration, IChatGptService gptService, IContentService contentService, IContentTypeService contentTypeService)
         {
             _configuration = configuration;
             _gptService = gptService;
             _contentService = contentService;
             _contentTypeService = contentTypeService;
-            _iBackOfficeSecurity = backOfficeSecurity;
         }
 
         [HttpPost]
@@ -59,6 +56,7 @@ namespace umbraco14Test.controllers
                     // Now parse the extracted XML
                     XElement root = XElement.Parse(xmlString);
                     string pageTitle = root.Element("pagetitle")?.Value;
+                    string pageContent = root.Element("pagecontent")?.Value;
 
 					var contentType = _contentTypeService.Get("contentAi");
 					var parentId = Guid.Parse("ca4249ed-2b23-4337-b522-63cabe5587d1");
@@ -67,7 +65,8 @@ namespace umbraco14Test.controllers
                     var newPage = _contentService.Create(pageTitle, parentId, contentType.Alias);
 
 					// Set the value of the property with alias 'price'
-					newPage.SetValue("contentTitle", pageTitle + " test");
+					newPage.SetValue("contentTitle", pageTitle);
+					newPage.SetValue("pageContent", pageContent);
 
 					// Save and publish the child item
 					var contentCreated = _contentService.Save(newPage);

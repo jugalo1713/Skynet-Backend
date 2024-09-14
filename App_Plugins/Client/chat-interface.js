@@ -1,17 +1,17 @@
-import { i as d, n as i, h as g, k as p, t as h } from "./property-B8FBF_sx.js";
+import { i as g, n as i, h as p, k as d, t as h } from "./property-B8FBF_sx.js";
 var m = Object.defineProperty, u = Object.getOwnPropertyDescriptor, n = (e, t, r, o) => {
   for (var a = o > 1 ? void 0 : o ? u(t, r) : t, c = e.length - 1, l; c >= 0; c--)
     (l = e[c]) && (a = (o ? l(t, r, a) : l(a)) || a);
   return o && a && m(t, r, a), a;
 };
-let s = class extends g {
+let s = class extends p {
   constructor() {
     super(), this.messages = [], this.currentMessage = "", this.username = "user", this.Gpt = "bot", this.GptMessage = "";
     const e = localStorage.getItem("chat");
     console.log(e), this.messages = e ? JSON.parse(e) : [];
   }
   render() {
-    return p`
+    return d`
       <div class="hero-container">
         <div class="hero-background continer">
           <h2 class="hero-title">scaynet</h2>
@@ -28,17 +28,21 @@ let s = class extends g {
         <div class="messages">
           ${this.messages.map((e) => {
       if (e.role === "user")
-        return p`
-                <div class="message">
-                  <p>${e.content}</p>
-                  <span class="user"> :${e.role}</span>
+        return d`
+                <div class="message-content">
+                  <span class="user">${e.role}</span>
+                  <div class="message">
+                    <p>${e.content}</p>
+                  </div>
                 </div>
               `;
       if (e.role === "bot")
-        return p`
-                <div class="messageGpt">
-                  <span class="Gpt"> ${e.role} : </span>
-                  <p>${e.content}</p>
+        return d`
+                <div class="messageGpt-content">
+                  <span class="Gpt"> ${e.role}</span>
+                  <div class="messageGpt">
+                    <p>${e.content}</p>
+                  </div>
                 </div>
               `;
     })}
@@ -107,7 +111,7 @@ let s = class extends g {
     ], this.fetchData(this.messages), localStorage.clear(), localStorage.setItem("chat", JSON.stringify(this.messages)), this.currentMessage = "";
   }
 };
-s.styles = d`
+s.styles = g`
     :host {
       height: 100%;
       color: black;
@@ -213,13 +217,23 @@ s.styles = d`
     .messages {
       min-height: 100px;
       height: auto;
-      max-height: 500px;
+      max-height: 80%;
       overflow-y: auto;
       border-bottom: 1px solid #ccc;
       margin-bottom: 10px;
       /* padding-inline: 10px; */
     }
 
+    .message-content{
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      width: max-content;
+      max-width: 80%;
+      display: flex;
+      flex-direction: column;
+      margin-left: auto;
+    }
     .message {
       margin-bottom: 1rem;
       padding: 0.5rem 1rem;
@@ -236,6 +250,9 @@ s.styles = d`
       }
     }
 
+    .messageGpt-content{
+      align-self: flex-start;
+    }
     .messageGpt {
       background-color: #f3f4f6;
       align-self: flex-start;
@@ -250,15 +267,17 @@ s.styles = d`
         margin: 0;
       }
     }
-
-    .messageGpt .Gpt {
+    .Gpt {
       font-weight: bold;
       align-self: center;
+      margin-inline: 10px
+      
     }
-
-    .message .user {
+    
+    .user {
       font-weight: bold;
-      align-self: center;
+      text-align:end;
+      margin-inline: 10px
     }
 
     .input-container {

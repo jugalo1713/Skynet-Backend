@@ -9,7 +9,7 @@ builder.CreateUmbracoBuilder()
     .AddComposers()
     .Build();
 
-builder.Services.AddTransient<IChatGptService, ChatGptService>();
+builder.Services.AddScoped<IChatGptService, ChatGptService>();
 
 WebApplication app = builder.Build();
 
