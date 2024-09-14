@@ -21,7 +21,7 @@ namespace umbraco14Test.Services
 
             //messagesParsed.Add(new SystemChatMessage("Please avoid all types of special characteres, at the beggining of all your messages --message-- and at the end --/message-- "));
 
-            var rootPrompt = "If you are completely sure that the user is requesting a page please add inside this tags '<pagerequested></pagerequested>' only the needed property '<pagetitle></pagetitle>' with a value you suggest after the user tells you what is the page about, e.g, if a user ask you a page about nature you could say '<pagerequested><page>Nature is beautiful</pagetitle></pagerequested>'";
+            var rootPrompt = "If you are completely sure that the user is requesting a page please add inside this tags '<pagerequested></pagerequested>' only the needed property '<pagetitle></pagetitle>' with a value you suggest after the user tells you what is the page about, e.g, if a user ask you a page about nature you could say '<pagerequested><pagetitle>Nature is beautiful</pagetitle></pagerequested>'";
 
             foreach (var chatItem in messageList.Messages)
             {
