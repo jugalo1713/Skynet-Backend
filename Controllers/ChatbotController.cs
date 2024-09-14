@@ -38,11 +38,6 @@ namespace umbraco14Test.controllers
         {
             try
             {
-                //1-Separar del response chatgpt las propiedades
-                //2-Crear el contenido programaticamente
-                //3 revisar la URL 
-
-
                 var client = await _gptService.CreateClient();
 
                 List<ChatMessage> messagesParsed = new();
@@ -58,15 +53,12 @@ namespace umbraco14Test.controllers
 
                 if (match.Success)
                 {
-                    //var testUser = _iBackOfficeSecurity.CurrentUser;
-
 					// Extracted XML portion
 					string xmlString = match.Value;
 
                     // Now parse the extracted XML
                     XElement root = XElement.Parse(xmlString);
                     string pageTitle = root.Element("pagetitle")?.Value;
-                    completinResponse = pageTitle;
 
 					var contentType = _contentTypeService.Get("contentAi");
 					var parentId = Guid.Parse("ca4249ed-2b23-4337-b522-63cabe5587d1");
@@ -79,7 +71,9 @@ namespace umbraco14Test.controllers
 
 					// Save and publish the child item
 					var contentCreated = _contentService.Save(newPage);
-                }
+                    //var urlCreated = contentCreated.Url();
+					completinResponse = $"He creado la pag {pageTitle}";
+				}
 
 
                 return completinResponse;
