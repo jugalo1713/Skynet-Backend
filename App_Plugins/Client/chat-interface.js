@@ -1,17 +1,17 @@
-import { i as g, n as i, h, k as l, t as d } from "./property-B8FBF_sx.js";
-var u = Object.defineProperty, f = Object.getOwnPropertyDescriptor, n = (e, t, s, r) => {
-  for (var o = r > 1 ? void 0 : r ? f(t, s) : t, c = e.length - 1, p; c >= 0; c--)
-    (p = e[c]) && (o = (r ? p(t, s, o) : p(o)) || o);
-  return r && o && u(t, s, o), o;
+import { i as d, n as i, h as g, k as p, t as h } from "./property-B8FBF_sx.js";
+var m = Object.defineProperty, u = Object.getOwnPropertyDescriptor, n = (e, t, r, o) => {
+  for (var a = o > 1 ? void 0 : o ? u(t, r) : t, c = e.length - 1, l; c >= 0; c--)
+    (l = e[c]) && (a = (o ? l(t, r, a) : l(a)) || a);
+  return o && a && m(t, r, a), a;
 };
-let a = class extends h {
+let s = class extends g {
   constructor() {
     super(), this.messages = [], this.currentMessage = "", this.username = "user", this.Gpt = "bot", this.GptMessage = "";
     const e = localStorage.getItem("chat");
     console.log(e), this.messages = e ? JSON.parse(e) : [];
   }
   render() {
-    return l`
+    return p`
       <div class="hero-container">
         <div class="hero-background continer">
           <h2 class="hero-title">scaynet</h2>
@@ -24,18 +24,21 @@ let a = class extends h {
         </div>
       </div>
       <div class="chat-container">
+        <div class="chat-header">Live chat</div>
         <div class="messages">
           ${this.messages.map((e) => {
       if (e.role === "user")
-        return l`
+        return p`
                 <div class="message">
-                  <span class="user">${e.role}:</span> ${e.content}
+                  <p>${e.content}</p>
+                  <span class="user"> :${e.role}</span>
                 </div>
               `;
       if (e.role === "bot")
-        return l`
+        return p`
                 <div class="messageGpt">
-                  ${e.content}<span class="Gpt"> :${e.role}</span>
+                  <span class="Gpt"> ${e.role} : </span>
+                  <p>${e.content}</p>
                 </div>
               `;
     })}
@@ -58,11 +61,10 @@ let a = class extends h {
     this.currentMessage = t.value;
   }
   async fetchData(e) {
-    console.log("estoy dentro del fetch");
     const t = { messages: e };
     try {
-      const s = await fetch(
-        "https://localhost:44352/umbraco/management/api/v1/chatbot",
+      const r = await fetch(
+        "https://localhost:44352/Chatbot/Chat",
         {
           method: "POST",
           headers: {
@@ -72,23 +74,23 @@ let a = class extends h {
           body: JSON.stringify(t)
         }
       );
-      if (!s)
+      if (!r)
         throw new Error("Error to send the message");
-      const r = await s.text();
+      const o = await r.text();
       this.messages = [
         ...this.messages,
         {
           role: this.Gpt,
-          content: r,
+          content: o,
           timestap: (/* @__PURE__ */ new Date()).toISOString().slice(0, 19)
         }
       ], localStorage.clear(), localStorage.setItem("chat", JSON.stringify(this.messages));
-    } catch (s) {
+    } catch (r) {
       this.messages = [
         ...this.messages,
         {
           role: this.Gpt,
-          content: s.message,
+          content: r.message,
           timestap: (/* @__PURE__ */ new Date()).toISOString().slice(0, 19)
         }
       ];
@@ -105,35 +107,26 @@ let a = class extends h {
     ], this.fetchData(this.messages), localStorage.clear(), localStorage.setItem("chat", JSON.stringify(this.messages)), this.currentMessage = "";
   }
 };
-a.styles = g`
+s.styles = d`
     :host {
-      color: rgba(255, 255, 255, 0.87);
+      height: 100%;
+      color: black;
       display: flex;
       width: 100%;
       font-family: Arial, sans-serif;
-      justify-content: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      align-items: center;
     }
 
     .hero-container {
       width: 100%;
-      position: absolute;
       display: flex;
       top: 0px;
       justify-content: center;
       text-align: center;
       padding: 2rem;
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-    }
-
-    .hero-container {
-      width: 100%;
-      position: absolute;
-      display: flex;
-      top: 0px;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+      color: #1f1f1f;
       background: linear-gradient(
         45deg,
         #ff552a,
@@ -169,7 +162,6 @@ a.styles = g`
 
     .hero-title {
       text-transform: uppercase;
-      color: white;
       font-size: 2rem;
       margin: 10px;
       font-family: sans-serif;
@@ -183,6 +175,7 @@ a.styles = g`
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(9.2px);
       -webkit-backdrop-filter: blur(9.2px);
+      border: 0;
     }
 
     .hero-button :hover {
@@ -192,43 +185,80 @@ a.styles = g`
 
     a {
       font-weight: 500;
-      color: #646cff;
       text-decoration: inherit;
     }
 
     .chat-container {
       justify-content: center;
       margin: 10px;
-      margin-top: 200px;
-      width: 95%;
+      margin-top: 1rem;
       max-width: 100%;
       padding: 10px;
-      background-color: #383737;
+      width: 90%;
+      margin: 1rem auto;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
     }
 
-    .messages {
-      height: 500px;
-      overflow-y: auto;
-      border-bottom: 1px solid #ccc;
+    .chat-header {
+      background-color: #f3f4f6;
+      padding: 1rem;
+      font-weight: bold;
+      color: black;
       margin-bottom: 10px;
     }
 
-    .message {
-      padding: 5px 0;
+    .messages {
+      min-height: 100px;
+      height: auto;
+      max-height: 500px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      /* padding-inline: 10px; */
     }
-    .messageGpt {
-      padding: 5px 0;
-      margin-right: 20px;
+
+    .message {
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      width: max-content;
+      max-width: 80%;
+      background-color: #3b82f6;
+      color: white;
       display: flex;
-      justify-content: flex-end;
+      margin-left: auto;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .messageGpt {
+      background-color: #f3f4f6;
+      align-self: flex-start;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      max-width: 80%;
+      width: max-content;
+      display: flex;
+
+      p {
+        margin: 0;
+      }
     }
 
     .messageGpt .Gpt {
       font-weight: bold;
+      align-self: center;
     }
 
     .message .user {
       font-weight: bold;
+      align-self: center;
     }
 
     .input-container {
@@ -236,42 +266,46 @@ a.styles = g`
     }
 
     input[type="text"] {
-      border: none;
-      flex: 1;
-      padding: 5px;
-      background-color: #cacaca;
-      color: #292929;
+      flex-grow: 1;
+      padding: 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      margin-right: 0.5rem;
     }
 
     button {
-      padding: 5px 10px;
-      border: none;
-      background-color: #68acf5;
-      color: black;
-      cursor: pointer;
+      display: inline-block;
+      background-color: #3b82f6;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      font-weight: bold;
       transition: transform 0.3s ease, background-color 0.3s ease;
+      border: 0;
     }
 
     button:hover {
       transform: scale(1.1);
+      cursor: pointer;
     }
   `;
 n([
   i({ type: Array })
-], a.prototype, "messages", 2);
+], s.prototype, "messages", 2);
 n([
   i({ type: String })
-], a.prototype, "currentMessage", 2);
+], s.prototype, "currentMessage", 2);
 n([
   i({ type: String })
-], a.prototype, "username", 2);
+], s.prototype, "username", 2);
 n([
   i({ type: String })
-], a.prototype, "Gpt", 2);
+], s.prototype, "Gpt", 2);
 n([
   i({ type: String })
-], a.prototype, "GptMessage", 2);
-a = n([
-  d("chat-interface")
-], a);
+], s.prototype, "GptMessage", 2);
+s = n([
+  h("chat-interface")
+], s);
 //# sourceMappingURL=chat-interface.js.map

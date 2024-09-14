@@ -1,25 +1,19 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OpenAI.Chat;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Umbraco.Cms.Api.Management.Controllers;
-using Umbraco.Cms.Api.Management.Routing;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Web.Common.Authorization;
 using Umbraco.Cms.Web.Common.Controllers;
-using Umbraco.Cms.Web.Common.Filters;
-using Umbraco.Cms.Web.Common.PublishedModels;
 using umbraco14Test.Models;
 using umbraco14Test.Services;
 
 
 namespace umbraco14Test.controllers
 {
-    [VersionedApiBackOfficeRoute("chatbot")]
-	public class ChatbotController : ManagementApiControllerBase
+	[ApiController]
+	[Route("[controller]/[action]")]
+	public class ChatbotController : UmbracoApiController
 	{
         private readonly IConfiguration _configuration;
         private readonly IChatGptService _gptService;
@@ -52,10 +46,6 @@ namespace umbraco14Test.controllers
                 var client = await _gptService.CreateClient();
 
                 List<ChatMessage> messagesParsed = new();
-                //ChatCompletionOptions options = new ChatCompletionOptions();
-                //options.MaxTokens = 150;
-                //options.Temperature = 0.5f;
-                //options
                 
                 messagesParsed.AddRange(_gptService.ParseMessages(messageList).ToList());
 
@@ -83,8 +73,6 @@ namespace umbraco14Test.controllers
 
                     // Create a new child item of type 'Product'
                     var newPage = _contentService.Create(pageTitle, parentId, contentType.Alias);
-
-					
 
 					// Set the value of the property with alias 'price'
 					newPage.SetValue("contentTitle", pageTitle + " test");
